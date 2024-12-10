@@ -3,14 +3,13 @@ package com.portmoor.songbird.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class IndexController {
+public class HomeController {
 
-    @RequestMapping(value = "/index", method = RequestMethod.GET)
-    @ResponseBody
-    public String show() {
-        return "Hello World!";
+    @RequestMapping(value="/home", method = RequestMethod.GET)
+    public String show(){
+        return "home.html";
     }
+
 }
