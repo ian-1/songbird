@@ -1,5 +1,7 @@
 package com.portmoor.songbird;
 
+import com.portmoor.songbird.models.User;
+import com.portmoor.songbird.repositories.UserRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -9,11 +11,17 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+
+import static com.portmoor.songbird.models.Utils.Gender.*;
+import static com.portmoor.songbird.models.Utils.GenderIdentity.CIS;
 
 @SpringBootApplication
+@EnableMongoRepositories("com.portmoor.songbird.repositories")
 public class SongbirdApplication {
 
 	public static void main(String[] args) {
@@ -43,6 +51,48 @@ public class SongbirdApplication {
 			printBreakLine(60);
 		};
 	}
+
+	// TODO: Remove repo stuff from application START
+	@Autowired
+	private UserRepository repository;
+
+	@Bean
+	public CommandLineRunner databaseExample() throws Exception {
+		repository.deleteAll();
+
+		repository.save(new User("AliceThePalice", FEMALE, false, 2001));
+		repository.save(new User("BobDbobDbob", MALE, false, 1997));
+		repository.save(new User("Zarahhhh", FEMALE, true, 2004));
+		repository.save(new User("JanJan", OTHER, true, 1999));
+		repository.save(new User("Bennnny", NONBINARY, false, 2001));
+		repository.save(new User("BillBow", MALE, false, 2002));
+
+		return args -> {
+			System.out.println("Users found with findAll():");
+			System.out.println("-------------------------------");
+			for (User user : repository.findAll()) {
+				System.out.println(user);
+			}
+			System.out.println();
+
+			System.out.println("Customer found with findByFirstName('BobDbobDbob'):");
+			System.out.println("--------------------------------");
+			System.out.println(repository.findByUserName("BobDbobDbob"));
+
+			System.out.println("Customers found with findByGender('FEMAIL'):");
+			System.out.println("--------------------------------");
+			for (User femaleUser : repository.findByGender(FEMALE)) {
+				System.out.println(femaleUser);
+			}
+
+			System.out.println("Customers found with findByDateOFBirth(2001):");
+			System.out.println("--------------------------------");
+			for (User user : repository.findByYearOfBirth(2001)) {
+				System.out.println(user);
+			}
+		};
+	}
+	// TODO: Remove repo stuff from application END
 
 	private void printBreakLine(final Integer length) {
 		System.out.println(YELLOW + "-".repeat(length));
