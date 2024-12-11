@@ -1,20 +1,11 @@
 <html>
   <head>
     <title>Songbird</title>
+    <link rel="stylesheet" type="text/css" href="css/test.css" />
+    <script src="js/home.js"></script>
   </head>
   <body>
-    <script land="javascript">
-        function changeTextButton(){
-          var changBtn = document.getElementById("changeButton");
-          if(changeBtn.value == "Click me!"){
-            changeBtn.value = "You clicked me!";
-          } else {
-            changeBtn.value = "Click me!";
-          }
-        }
-    </script>
-
     <h1>Songbird</h1>
-    <input type="button" id="changeButton" value="Click me!" onclick="changeTextButton()">
+    <input type="button" id="changeButton" class="red" value="Click me!" onclick="changeTextButton()" />
   </body>
 </html>
